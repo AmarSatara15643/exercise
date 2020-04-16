@@ -14,7 +14,7 @@ class Post extends Component {
   }
 
   componentDidMount() {
-    if(this.state.)
+    if(this.props)
   }
 
   toggleForm() {

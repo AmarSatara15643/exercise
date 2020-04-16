@@ -13,6 +13,10 @@ export const App = () => {
     dispatch(loadPosts())
   }, [])
 
+  useEffect(() => {
+    dispatch(loadPosts())
+  }, [])
+
   return (
     <div>
       {/* <pre>{JSON.stringify(posts, null, 2)}</pre> */}

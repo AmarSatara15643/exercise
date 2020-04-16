@@ -30,3 +30,12 @@ export function loadPosts () {
     })
   }
 }
+
+export function updatePosts () {
+  return dispatch => {
+    return dispatch({
+      type: STORE,
+      payload: axios.post('/api/posts')
+    })
+  }
+}
