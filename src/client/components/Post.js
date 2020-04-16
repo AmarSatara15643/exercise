@@ -13,9 +13,7 @@ class Post extends Component {
     this.toggleForm = this.toggleForm.bind(this)
   }
 
-  componentDidMount() {
-    if(this.props)
-  }
+
 
   toggleForm() {
     if(this.state.formDisplay)
