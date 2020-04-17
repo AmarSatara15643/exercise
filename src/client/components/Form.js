@@ -12,10 +12,9 @@ class Form extends Component {
 
   }
 
-
   render() {
     return (
-      <form action="/api/posts" method="POST" onSubmit={this.handleSubmit}>
+      <form action="/api/answer" method="POST" onSubmit={this.handleSubmit}>
         <input type="hidden" value={this.props.parentId} name="parentId"></input>
         <h4>Author:</h4>
         <input

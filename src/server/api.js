@@ -35,7 +35,7 @@ client.connect(err => {
     })
 
     // Get posts from MongoDB
-    router.get('/api/posts:id', (req, res) => {
+    router.get('/api/posts/:id', (req, res) => {
 
       db.collection('postsAmar').find({parent:req.params.id}).toArray((err, posts) => {
         if (err) {
@@ -58,14 +58,45 @@ client.connect(err => {
     })
     
     // Insert answers
-    router.post('/api/posts', (req, res) => {
-
+    router.post('/api/answer', (req, res) => {
       let today = new Date().toString();
 
-      db.collection('postsAmar').insertOne({title:req.body.title,text:req.body.text,author:req.body.author,insert_date: today,parent:req.body.parentId})
-      //console.log(req.body.parentId);
+      db.collection('postsAmar').insertOne({
+        title:req.body.title,
+        text:req.body.text,
+        author:req.body.author,
+        insert_date: today,
+        parent:req.body.parentId
+      })
+
       res.redirect('/');
     })
+
+    router.get('/api/answers', (req, res) => {
+      db.collection('postsAmar').find().toArray((err, data) => {
+        if (err) {
+          console.error(err)
+        }
+
+        var answers = data.filter(x => x.parent != null);
+        // Return data as JSON
+        res.json(answers)
+      })
+    });
+
+    router.get('/api/answers/:id', (req, res) => {
+      db.collection('postsAmar').find().toArray((err, data) => {
+        if (err) {
+          console.error(err)
+        }
+
+        var answers = data.filter(x => x.parent == req.params.id);
+
+        //console.log(answers);
+        // Return data as JSON
+        res.json(answers)
+      })
+    });
   }
 })
 

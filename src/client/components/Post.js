@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 const axios = require('axios');
 
 import Form from './Form'
+import Answer from './Answer'
 
 class Post extends Component {
   constructor(props){
@@ -15,18 +16,10 @@ class Post extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/posts:'+this.props.parentId)
-    .then(function (response) {
-      if(response!=null && response!=undefined){
-        var answers = JSON.parse(response);
-        this.setState(answers);
-      }
-    })
+    axios.get('/api/answers/'+this.props.parentId)
+    .then((response) => this.setState({ answers: response.data }))
     .catch(function (error) {
-      console.log("Not found!");
-    })
-    .then(function () {
-      // always executed
+      return;
     })
   }
 
@@ -50,7 +43,11 @@ class Post extends Component {
         <p>{this.props.text}</p>
         <button onClick={this.toggleForm} style={{marginTop: "20px", width: "100%", backgroundColor: "red", fontSize: "20px"}}>Answer</button>
 
-        {this.state.answers !== null ? this.state.answers.map((item,index)=>(<Post date={item.insert_date} author={item.author} text={item.text} title={item.title} parentId={item._id} key={index}/>)) : null}
+        {this.state.answers !== null ? 
+          this.state.answers.map((item,index)=>(<Answer date={item.insert_date} author={item.author} text={item.text} title={item.title} parentId={item._id} key={index}/>)) 
+          
+          : null
+        }
 
         {this.state.formDisplay === true ? <Form parentId={this.props.parentId} /> : null}
       </div>
