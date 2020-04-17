@@ -9,22 +9,27 @@ class Form extends Component {
 
   handleSubmit() {
     console.log("Form submit key: ", this.props.parentId)
+
   }
 
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form action="/api/posts" method="POST" onSubmit={this.handleSubmit}>
+        <input type="hidden" value={this.props.parentId} name="parentId"></input>
         <h4>Author:</h4>
         <input
+          name="author"
           type="text"
         />
         <h4>Title:</h4>
         <input
+          name="title"
           type="text"
         />
         <h4>Text:</h4>
         <input
+          name="text"
           type="text"
         />
         <br />

@@ -1,4 +1,5 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
+const axios = require('axios');
 
 import Form from './Form'
 
@@ -11,6 +12,22 @@ class Post extends Component {
     }
 
     this.toggleForm = this.toggleForm.bind(this)
+  }
+
+  componentDidMount() {
+    axios.get('/api/posts:'+this.props.parentId)
+    .then(function (response) {
+      if(response!=null && response!=undefined){
+        var answers = JSON.parse(response);
+        this.setState(answers);
+      }
+    })
+    .catch(function (error) {
+      console.log("Not found!");
+    })
+    .then(function () {
+      // always executed
+    })
   }
 
 
@@ -33,7 +50,7 @@ class Post extends Component {
         <p>{this.props.text}</p>
         <button onClick={this.toggleForm} style={{marginTop: "20px", width: "100%", backgroundColor: "red", fontSize: "20px"}}>Answer</button>
 
-        {this.state.answers !== null ? <Form parentId={this.props.parentId} /> : null}
+        {this.state.answers !== null ? this.state.answers.map((item,index)=>(<Post date={item.insert_date} author={item.author} text={item.text} title={item.title} parentId={item._id} key={index}/>)) : null}
 
         {this.state.formDisplay === true ? <Form parentId={this.props.parentId} /> : null}
       </div>

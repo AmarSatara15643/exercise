@@ -5,18 +5,17 @@ const initialState = []
 
 // Actions
 const LOAD = 'posts/LOAD'
-const STORE = 'posts/STORE'
+//const STORE = 'posts/STORE'
 
 // Reducer
 export default function reducer (state = initialState, action = {}) {
   switch (action.type) {
     case `${LOAD}_FULFILLED`: {
-      console.log("--------- reducer ");
       return [...action.payload.data]
     }
-    case `${STORE}_FULFILLED`: {
-      console.log("Reducer store --");
-    }
+    // case `${STORE}_FULFILLED`: {
+    //   console.log("Reducer store --");
+    // }
     default: return state
   }
 }
