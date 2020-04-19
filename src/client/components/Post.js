@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 const axios = require('axios');
 
+import { Card, ListGroup, Row, Container, Col } from 'react-bootstrap'
+
 import Form from './Form'
 import Answer from './Answer'
 
@@ -13,6 +15,7 @@ class Post extends Component {
     }
 
     this.toggleForm = this.toggleForm.bind(this)
+    this.toggleAnswer = this.toggleAnswer.bind(this)
   }
 
   componentDidMount() {
@@ -32,25 +35,57 @@ class Post extends Component {
       this.setState({formDisplay:true})
   }
 
+  toggleAnswer = (event) => {
+    console.log(this.state.answers.length);
+    if(this.state.answers.length === 0){
+      alert("No answers for this question yet.");
+      return;
+    }
+    var parent = event.target.closest('.container');
+    var answersWrapper = parent.querySelector('.answers-wrapper');
+
+    answersWrapper.classList.toggle('hidden');
+  }
+
   render() {
     return (
-      <div  style={{display: "flex", flexDirection: "column", border: "solid 1px black"}}>
-        <div style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
-          <p>{this.props.date}</p>
-          <p>|</p>
-          <p>{this.props.author}</p>
+      <Container className="mb-3">
+      <div className="container mt-3">
+      <Row>
+        <Col>
+          <Card className='mb-2'>
+            <ListGroup variant="flush">
+              <ListGroup.Item style={{backgroundColor: '#4F9EC9'}}>
+                <Row>
+                  <Card.Text className='pl-3'>{this.props.author!='' ? <b>{this.props.author}</b> : <b>Unknown</b>}</Card.Text>
+                  <Card.Text className='ml-1 mr-1'>on</Card.Text>
+                  <Card.Text>{this.props.date}</Card.Text>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {this.props.text!='' ? <Card.Text>{this.props.text}</Card.Text> : <b>...</b>}
+              </ListGroup.Item>
+            </ListGroup>
+          </Card>
+          {this.state.formDisplay === true ? <Form parentId={this.props.parentId} /> : null}
+          <Row className="d-flex flex-row-reverse pr-3 mb-2">
+            <div className="btn-group" role="group" aria-label="Basic example">
+              <button onClick={this.toggleForm} className="btn btn-success">Answer</button>
+              <button onClick={this.toggleAnswer} className="btn btn-success">See answers</button>
+            </div>
+          </Row>
+        </Col>
+      </Row>
+
+        <div className="answers-wrapper hidden" style={{flex: 1, justifyContent: 'flex-end'}}>          
+          {this.state.answers !== null ? 
+            this.state.answers.map((item,index)=>(<Answer date={item.insert_date} author={item.author} text={item.text} title={item.title} parentId={item._id} key={index}/>)) 
+            
+            : null
+          }
         </div>
-        <p>{this.props.text}</p>
-        <button onClick={this.toggleForm} style={{marginTop: "20px", width: "100%", backgroundColor: "red", fontSize: "20px"}}>Answer</button>
-
-        {this.state.answers !== null ? 
-          this.state.answers.map((item,index)=>(<Answer date={item.insert_date} author={item.author} text={item.text} title={item.title} parentId={item._id} key={index}/>)) 
-          
-          : null
-        }
-
-        {this.state.formDisplay === true ? <Form parentId={this.props.parentId} /> : null}
       </div>
+      </Container>
     );
   }
 }
